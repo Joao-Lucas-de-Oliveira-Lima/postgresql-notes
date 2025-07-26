@@ -1,0 +1,31 @@
+services:
+  postgres:
+    image: postgres:17.4-alpine
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: database
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  adminer:
+    image: adminer
+    ports:
+      - '8080:8080'
+    depends_on:
+      - postgres
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL:
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - '8888:80'
+    profiles:
+      - pgadmin
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+volumes:
+  postgres_data:
+  pgadmin-data:
